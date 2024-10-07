@@ -24,7 +24,7 @@ templ Form(form types.Form) {
 			<input type="text" name="name" value={ form.Name } data-on-keyup="$elf='name';$elv=ctx.el.value;$elr=''; $$patch('/patch')"/>
 			<div>
 				for id, role := range form.Roles {
-					<input type="checkbox" value="1" checked?={ role.Name != "" || role.Name == "1" } data-on-click={ fmt.Sprintf("$elf='roles';$elv=ctx.el.checked==true?'1':'0';$elr='%d'; $$patch('/patch')", id) }/>
+					<input type="checkbox" value="1" checked?={ role.Name != "" && role.Name == "1" } data-on-click={ fmt.Sprintf("$elf='roles';$elv=ctx.el.checked==true?'1':'0';$elr='%d'; $$patch('/patch')", id) }/>
 				}
 			</div>
 		</div>

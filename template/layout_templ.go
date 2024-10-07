@@ -118,7 +118,7 @@ func Form(form types.Form) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				if role.Name != "" || role.Name == "1" {
+				if role.Name != "" && role.Name == "1" {
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" checked")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
