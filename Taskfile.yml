@@ -1,0 +1,21 @@
+version: '3'
+
+interval: 200ms
+
+tasks:
+  default:
+    deps: [p1, p2]
+    sources:
+      - "pkg/**/*.go"
+      - "template/*.templ"
+  p1:
+    TEMPL_EXPERIMENT=rawgo templ generate --watch
+  p2:
+    gow run cmd/app/*.go
+
+  tools:
+    cmds:
+      - go install github.com/go-task/task/v3/cmd/task@latest
+      - go install github.com/a-h/templ/cmd/templ@latest
+      - go install github.com/delaneyj/toolbelt/sqlc-gen-zombiezen@latest
+      - go install golang.org/x/tools/cmd/goimports@latest  
