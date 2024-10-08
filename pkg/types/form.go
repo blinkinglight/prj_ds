@@ -1,5 +1,7 @@
 package types
 
+import "github.com/ituoga/toolbox"
+
 type DataStore struct {
 	Elf string `json:"elf"`
 	Elv string `json:"elv"`
@@ -7,9 +9,9 @@ type DataStore struct {
 }
 
 type Form struct {
-	Name  string                `json:"name"`
-	Count int                   `json:"count"`
-	Roles *LinkedList[FormRole] `json:"roles"`
+	Name  string                        `json:"name"`
+	Count int                           `json:"count"`
+	Roles *toolbox.LinkedList[FormRole] `json:"roles"`
 }
 
 type FormRole struct {

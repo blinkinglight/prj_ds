@@ -9,19 +9,24 @@ import (
 	"github.com/delaneyj/datastar"
 	"github.com/delaneyj/toolbelt"
 	"github.com/go-chi/chi/v5"
+	"github.com/ituoga/toolbox"
 )
 
 func SetupTest(router chi.Router) {
-	var form = types.Form{
-		Count: 1,
-		Roles: &types.LinkedList[types.FormRole]{},
+	var form types.Form
+
+	resetForm := func() {
+		form = types.Form{
+			Count: 1,
+			Roles: &toolbox.LinkedList[types.FormRole]{},
+		}
+		form.Roles = &toolbox.LinkedList[types.FormRole]{}
+		form.Roles.Add(types.FormRole{
+			Id: toolbelt.NextID(),
+		})
 	}
-	form.Roles.Add(types.FormRole{
-		Id:       toolbelt.NextID(),
-		Name:     "",
-		Valid:    false,
-		Category: "",
-	})
+
+	resetForm()
 
 	router.Route("/", func(r chi.Router) {
 
@@ -41,11 +46,7 @@ func SetupTest(router chi.Router) {
 		})
 
 		r.Delete("/reset", func(w http.ResponseWriter, r *http.Request) {
-			form.Roles = &types.LinkedList[types.FormRole]{}
-			form.Roles.Add(types.FormRole{
-				Id: toolbelt.NextID(),
-			})
-
+			resetForm()
 			sse := datastar.NewSSE(w, r)
 			datastar.RenderFragmentTempl(sse, template.Forma(form), datastar.WithoutViewTransitions())
 		})
