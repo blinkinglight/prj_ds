@@ -27,19 +27,19 @@ templ Form(form types.Form) {
 
 templ Forma(form types.Form) {
 	<div id="forma" data-store={ templ.JSONString(form) }>
-		<input type="text" name="name" data-model="name" data-on-keyup="$$patch('/patch')"/>
+		<input  autocomplete="off" type="text" name="name" data-model="name" data-on-keyup="$$patch('/patch')"/>
 		<div>
 			<button data-on-click="$$delete('/reset')">Reset</button>
 			<button data-on-click="$$post('/add')">Add</button>
-			<input type="text" data-model="count" data-on-keyup="$$patch('/patch')"/>
+			<input autocomplete="off" type="text" data-model="count" data-on-keyup="$$patch('/patch')"/>
 		</div>
 		<div>
 			{{ prefix := "roles.next" }}
 			for _, role := range form.Roles.AsSlice() {
 				<div>
-					<input data-model={ prefix + ".el.valid" } type="checkbox" value="1" data-on-change={ fmt.Sprintf("$$patch('/patch')") }/>
-					<input data-model={ prefix + ".el.name" } type="text" data-on-keydown.debounce_100ms={ fmt.Sprintf("$$patch('/patch')") }/>
-					<input data-model={ prefix + ".el.category" } type="text" data-on-keydown.debounce_100ms={ fmt.Sprintf("$$patch('/patch')") }/>
+					<input autocomplete="off" data-model={ prefix + ".el.valid" } type="checkbox" value="1" data-on-change={ fmt.Sprintf("$$patch('/patch')") }/>
+					<input autocomplete="off" data-model={ prefix + ".el.name" } type="text" data-on-keydown.debounce_100ms={ fmt.Sprintf("$$patch('/patch')") }/>
+					<input autocomplete="off" data-model={ prefix + ".el.category" } type="text" data-on-keydown.debounce_100ms={ fmt.Sprintf("$$patch('/patch')") }/>
 					<button data-on-click={ datastar.DELETE("/remove/%d", role.Id) }>Delete</button>
 				</div>
 				{{ prefix += ".next" }}
