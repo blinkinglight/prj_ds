@@ -3,6 +3,7 @@ package template
 import (
 	"fmt"
 	"github.com/blinkinglight/prj_ds/pkg/types"
+	"github.com/delaneyj/datastar"	
 )
 
 templ Page() {
@@ -21,8 +22,6 @@ templ Page() {
 templ Form(form types.Form) {
 	@Page() {
 		@Forma(form)
-		@Debug(form)
-        @S(form)
 	}
 }
 
@@ -30,32 +29,21 @@ templ Forma(form types.Form) {
 	<div id="forma" data-store={ templ.JSONString(form) }>
 		<input type="text" name="name" data-model="name" data-on-keyup="$$patch('/patch')"/>
 		<div>
-			{{ depth := "roles" }}
-			for role := form.Roles; role != nil; role = role.FormRole {
-				<div>
-					<input data-model={ depth + ".valid" } type="checkbox" value="1" data-on-change={ fmt.Sprintf("$$patch('/patch')") }/>
-				</div>
-				{{ depth += ".roles" }}
-			}
-		</div>
-		<div>
 			<button data-on-click="$$delete('/reset')">Reset</button>
 			<button data-on-click="$$post('/add')">Add</button>
+			<input type="text" data-model="count" data-on-keyup="$$patch('/patch')"/>
 		</div>
-
+		<div>
+			{{ prefix := "roles.next" }}
+			for _, role := range form.Roles.AsSlice() {
+				<div>
+					<input data-model={ prefix + ".el.valid" } type="checkbox" value="1" data-on-change={ fmt.Sprintf("$$patch('/patch')") }/>
+					<input data-model={ prefix + ".el.name" } type="text" data-on-keydown.debounce_100ms={ fmt.Sprintf("$$patch('/patch')") }/>
+					<input data-model={ prefix + ".el.category" } type="text" data-on-keydown.debounce_100ms={ fmt.Sprintf("$$patch('/patch')") }/>
+					<button data-on-click={ datastar.DELETE("/remove/%d", role.Id) }>Delete</button>
+				</div>
+				{{ prefix += ".next" }}
+			}
+		</div>
 	</div>
-	<div data-text="$name"></div>
-	<div data-text="$roles"></div>
-}
-
-templ Debug(a any) {
-	<div id="debug">
-		{ templ.JSONString(a) }
-	</div>
-}
-
-templ S(page types.Form) {
-    <pre id="S">
-    { fmt.Sprintf("%+#v", page.Roles) }
-    </pre>
 }
